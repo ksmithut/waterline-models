@@ -1,0 +1,3 @@
+test/*.js
+--require test/helpers/chai.js
+--reporter spec

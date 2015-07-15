@@ -1,0 +1,13 @@
+sudo: false
+language: node_js
+os:
+  - linux
+  - osx
+node_js:
+  - "0.12"
+  - "0.11"
+  - "0.10"
+  - iojs
+env:
+  - secure:
+after_success: npm run codeclimate

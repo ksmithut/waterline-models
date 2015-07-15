@@ -1,0 +1,42 @@
+{
+  "name": "waterline-models",
+  "version": "0.0.0",
+  "description": "Auto loads waterline models from a directory",
+  "main": "index.js",
+  "scripts": {
+    "test": "istanbul cover _mocha",
+    "jshint": "jshint --reporter node_modules/jshint-stylish index.js",
+    "testcov": "istanbul cover _mocha",
+    "check-cov": "istanbul check-coverage --statements 100 --functions 100 --branches 100 --lines 100",
+    "posttest": " npm run check-cov; npm run jshint;",
+    "codeclimate": "cat ./coverage/lcov.info | codeclimate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ksmithut/waterline-models.git"
+  },
+  "keywords": [
+    "warpcore"
+  ],
+  "author": "ksmithut",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ksmithut/waterline-models/issues"
+  },
+  "homepage": "https://github.com/ksmithut/waterline-models",
+  "dependencies": {
+    "bluebird": "^2.9.34",
+    "object-assign": "^3.0.0",
+    "waterline": "^0.10.26"
+  },
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "chai-as-promised": "^5.1.0",
+    "codeclimate-test-reporter": "^0.1.0",
+    "istanbul": "^0.3.15",
+    "jshint": "^2.8.0",
+    "jshint-stylish": "^2.0.0",
+    "mocha": "^2.2.5",
+    "mocha-lcov-reporter": "0.0.2"
+  }
+}
