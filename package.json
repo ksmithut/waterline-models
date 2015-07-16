@@ -1,6 +1,6 @@
 {
   "name": "waterline-models",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Auto loads waterline models from a directory",
   "main": "index.js",
   "scripts": {
