@@ -6,6 +6,7 @@ var getModels = require('../');
 var path = require('path');
 
 var MODELS_PATH = path.join(__dirname, 'fixtures', 'models');
+var BAD_MODELS_PATH = path.join(__dirname, 'fixtures', 'bad-models');
 
 describe('WaterlineModels tests', function () {
 
@@ -64,6 +65,26 @@ describe('WaterlineModels tests', function () {
         expect(users[0]).to.have.deep.property('pets.1.type', 'dog');
         expect(users[0]).to.have.deep.property('pets.1.name', 'Grr');
         expect(users[0]).to.have.deep.property('pets.1.owner', user.id);
+      });
+  });
+
+  it('should fail if file is not valid collection', function () {
+    var modelsInit = getModels({
+      dir: BAD_MODELS_PATH,
+      adapters: {
+        memory: require('sails-memory')
+      },
+      connections: {
+        default: {
+          adapter: 'memory'
+        }
+      }
+    });
+    var error;
+    return modelsInit.getModels()
+      .catch(function (err) { error = err; })
+      .finally(function () {
+        expect(error).to.be.instanceOf(Error);
       });
   });
 
