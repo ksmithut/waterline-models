@@ -22,14 +22,57 @@ npm install --save waterline-models
 
 # Usage
 
-```js
+`models/user.js`
 
+```js
+module.exports = require('waterline-models').Collection.extend({
+  identity: 'user',
+  connection: 'default',
+  attributes: {
+    firstName: 'string',
+    lastName: 'string'
+  }
+});
+```
+
+`app.js`
+
+```js
+var path = require('path');
+var WaterlineModels = require('waterline-models');
+var appModels = new WaterlineModels({
+  dir: path.join(__dirname, 'models'),
+  adapters: {
+    memory: require('sails-memory-adapter')
+  },
+  connections: {
+    default: {
+      adapter: 'memory'
+    }
+  }
+});
+
+appModels.getModels()
+  .then(function (models) {
+    return models.user.create({
+      firstName: 'Jack',
+      lastName: 'Black'
+    });
+  })
+  .then(function (createdUser) {
+    return models.user.find({firstName: 'Jack'});
+  });
 ```
 
 # Options
 
-### `someOption`
+### `dir`
 
-Description
+The absolute path to the directory where your waterline collection definitions
+live.
 
-Default:
+Default: `path.resolve('models')` which ends up being `process.cwd() + '/models'`
+
+All other options are passed into waterline's `initialize` method as the
+configuration which is documented
+[here](https://github.com/balderdashy/waterline-docs/blob/master/introduction/getting-started.md).
