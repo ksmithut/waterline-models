@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports = require('waterline').Collection.extend({
-  connection: 'default',
+  identity: 'user',
+  connection: 'memory',
   attributes: {
     firstName: 'string',
     lastName: 'string',

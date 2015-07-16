@@ -37,7 +37,7 @@ module.exports = require('waterline-models').Collection.extend({
 
 ```js
 var path = require('path');
-var WaterlineModels = require('waterline-models');
+var WaterlineModels = require('waterline-models').WaterlineModels;
 var appModels = new WaterlineModels({
   dir: path.join(__dirname, 'models'),
   adapters: {
@@ -60,6 +60,39 @@ appModels.getModels()
   .then(function (createdUser) {
     return models.user.find({firstName: 'Jack'});
   });
+```
+
+You can also just make the models available on the module directly
+
+`app.js`
+
+```js
+var path = require('path');
+require('waterline-models')({
+  dir: path.join(__dirname, 'models'),
+  adapters: {
+    memory: require('sails-memory-adapter')
+  },
+  connections: {
+    default: {
+      adapter: 'memory'
+    }
+  }
+}).then(function () {
+  // load other modules
+  require('./other-module');
+});
+```
+
+`other-module.js`
+
+```js
+var User = require('waterline-models').user;
+// access the model with the value you passed to `identity` in the collection definition
+User.create({
+  firstName: 'Jack',
+  lastName: 'Black'
+});
 ```
 
 # Options

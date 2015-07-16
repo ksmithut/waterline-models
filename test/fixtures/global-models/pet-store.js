@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = require('waterline').Collection.extend({
-  identity: 'pet',
-  connection: 'default',
+  identity: 'petstore',
+  connection: 'memory',
   attributes: {
     breed: 'string',
     type: 'string',

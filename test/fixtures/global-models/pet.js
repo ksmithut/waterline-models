@@ -2,7 +2,7 @@
 
 module.exports = require('waterline').Collection.extend({
   identity: 'pet',
-  connection: 'default',
+  connection: 'memory',
   attributes: {
     breed: 'string',
     type: 'string',

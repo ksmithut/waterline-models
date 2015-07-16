@@ -7,11 +7,12 @@ var path = require('path');
 
 var MODELS_PATH = path.join(__dirname, 'fixtures', 'models');
 var BAD_MODELS_PATH = path.join(__dirname, 'fixtures', 'bad-models');
+var GLOBAL_MODELS_PATH = path.join(__dirname, 'fixtures', 'global-models');
 
 describe('WaterlineModels tests', function () {
 
   it('should load all waterline collections from directory', function () {
-    var modelsInit = getModels({
+    var modelsInit = getModels.WaterlineModels({
       dir: MODELS_PATH,
       adapters: {
         memory: require('sails-memory')
@@ -69,7 +70,7 @@ describe('WaterlineModels tests', function () {
   });
 
   it('should fail if file is not valid collection', function () {
-    var modelsInit = getModels({
+    var modelsInit = getModels.WaterlineModels({
       dir: BAD_MODELS_PATH,
       adapters: {
         memory: require('sails-memory')
@@ -86,6 +87,36 @@ describe('WaterlineModels tests', function () {
       .finally(function () {
         expect(error).to.be.instanceOf(Error);
       });
+  });
+
+  it('should do "global" models', function () {
+    return getModels({
+      dir: GLOBAL_MODELS_PATH,
+      adapters: {
+        memory: require('sails-memory')
+      },
+      connections: {
+        memory: {
+          adapter: 'memory'
+        }
+      }
+    }).then(function () {
+      return getModels.user.create({
+        firstName: 'blue',
+        lastName: 'bird'
+      });
+    }).then(function (user) {
+      return getModels.user.findById(user.id);
+    }).then(function (users) {
+      var user = users[0];
+      expect(user).to.have.property('id', 1);
+      expect(user).to.have.property('firstName', 'blue');
+      expect(user).to.have.property('lastName', 'bird');
+    }).then(function () {
+      return getModels().catch(function (err) { return err; });
+    }).then(function (err) {
+      expect(err).to.be.instanceOf(Error);
+    });
   });
 
 });
