@@ -10,8 +10,6 @@
 [![Build Status](http://img.shields.io/travis/ksmithut/waterline-models/master.svg?style=flat)](https://travis-ci.org/ksmithut/waterline-models)
 [![Coverage Status](http://img.shields.io/codeclimate/coverage/github/ksmithut/waterline-models.svg?style=flat)](https://codeclimate.com/github/ksmithut/waterline-models)
 
-This is a [warpcore](https://github.com/warpcorejs/warpcore) plugin.
-
 Auto loads waterline models from a directory
 
 # Installation
