@@ -3,7 +3,7 @@
 var Promise    = require('bluebird');
 var path       = require('path');
 var assign     = require('object-assign');
-var requireDir = require('./lib/require-dir');
+var requireDir = require('require-dir');
 
 module.exports = Models;
 
@@ -18,8 +18,9 @@ function Models(config) {
 
   var initialize = Promise.resolve(new Models.Waterline())
     .then(function (waterline) {
-      requireDir(config.dir).forEach(function (collection) {
-        waterline.loadCollection(collection.module);
+      var collectionFiles = requireDir(config.dir);
+      Object.keys(collectionFiles).forEach(function (collectionName) {
+        waterline.loadCollection(collectionFiles[collectionName]);
       });
       return Promise.fromNode(function (cb) {
         waterline.initialize(config, cb);

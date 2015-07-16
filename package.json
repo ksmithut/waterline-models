@@ -27,6 +27,7 @@
   "dependencies": {
     "bluebird": "^2.9.34",
     "object-assign": "^3.0.0",
+    "require-dir": "^0.3.0",
     "waterline": "^0.10.26"
   },
   "devDependencies": {
