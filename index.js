@@ -31,8 +31,7 @@ exports.init = function (config) {
     cwd: process.cwd(),
     dir: 'models',
     adapters: {},
-    connections: {},
-    defaultCollection: {}
+    connections: {}
   }, config);
 
   var Waterline = exports.Waterline;
@@ -44,8 +43,6 @@ exports.init = function (config) {
       var collectionFiles = requireDir(dir);
       Object.keys(collectionFiles).forEach(function (collectionName) {
         var collection = assign(
-          {},
-          config.defaultCollection,
           {identity: collectionName},
           collectionFiles[collectionName]
         );
