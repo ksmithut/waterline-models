@@ -23,22 +23,22 @@ npm install --save waterline-models
 `models/user.js`
 
 ```js
-module.exports = require('waterline-models').Collection.extend({
+module.exports = {
   identity: 'user',
   connection: 'default',
   attributes: {
     firstName: 'string',
     lastName: 'string'
   }
-});
+};
 ```
 
 `app.js`
 
 ```js
 var path = require('path');
-var WaterlineModels = require('waterline-models').WaterlineModels;
-var appModels = new WaterlineModels({
+var waterlineModels = require('waterline-models');
+waterlineModels.init({
   dir: path.join(__dirname, 'models'),
   adapters: {
     memory: require('sails-memory-adapter')
@@ -50,59 +50,43 @@ var appModels = new WaterlineModels({
   }
 });
 
-appModels.getModels()
-  .then(function (models) {
-    return models.user.create({
+// This could be in another file
+var User = require('waterline-models')('user'); // pass in the identity
+
+User
+  .then(function (Model) {
+    return Model.create({
       firstName: 'Jack',
-      lastName: 'Black'
+      lastName: 'Bliss'
     });
   })
-  .then(function (createdUser) {
-    return models.user.find({firstName: 'Jack'});
+  .then(function (user) {
+    console.log(user);
+    // {
+    //   firstName: 'Jack',
+    //   lastName: 'Bliss',
+    //   createdAt: Some Date,
+    //   updatedAt: Some Date,
+    //   id: 1
+    // }
   });
-```
-
-You can also just make the models available on the module directly
-
-`app.js`
-
-```js
-var path = require('path');
-require('waterline-models')({
-  dir: path.join(__dirname, 'models'),
-  adapters: {
-    memory: require('sails-memory-adapter')
-  },
-  connections: {
-    default: {
-      adapter: 'memory'
-    }
-  }
-}).then(function () {
-  // load other modules
-  require('./other-module');
-});
-```
-
-`other-module.js`
-
-```js
-var User = require('waterline-models').user;
-// access the model with the value you passed to `identity` in the collection definition
-User.create({
-  firstName: 'Jack',
-  lastName: 'Black'
-});
 ```
 
 # Options
 
+### `cwd`
+
+The cwd directory to work off of when reading from the models directory
+
+Default: `process.cwd()`
+
 ### `dir`
 
-The absolute path to the directory where your waterline collection definitions
-live.
+The path to your models directory
 
-Default: `path.resolve('models')` which ends up being `process.cwd() + '/models'`
+Default: `'models'`
+
+### `defaultCollection`
 
 All other options are passed into waterline's `initialize` method as the
 configuration which is documented

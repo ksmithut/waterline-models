@@ -16,7 +16,9 @@
     "url": "git@github.com:ksmithut/waterline-models.git"
   },
   "keywords": [
-    "warpcore"
+    "waterline",
+    "model",
+    "loader"
   ],
   "author": "ksmithut",
   "license": "MIT",
@@ -31,12 +33,13 @@
     "waterline": "^0.10.26"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
+    "chai": "^3.2.0",
     "chai-as-promised": "^5.1.0",
+    "clear-require": "^1.0.1",
     "codeclimate-test-reporter": "^0.1.0",
-    "istanbul": "^0.3.15",
+    "istanbul": "^0.3.18",
     "jshint": "^2.8.0",
-    "jshint-stylish": "^2.0.0",
+    "jshint-stylish": "^2.0.1",
     "mocha": "^2.2.5",
     "mocha-lcov-reporter": "0.0.2",
     "sails-memory": "^0.10.5"

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = require('waterline').Collection.extend({
+module.exports = {
   identity: 'pet',
   connection: 'default',
   attributes: {
@@ -13,4 +13,4 @@ module.exports = require('waterline').Collection.extend({
       model: 'user'
     }
   }
-});
+};

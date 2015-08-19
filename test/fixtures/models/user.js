@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = require('waterline').Collection.extend({
+module.exports = {
   identity: 'user',
   connection: 'default',
   attributes: {
@@ -11,4 +11,4 @@ module.exports = require('waterline').Collection.extend({
       via: 'owner'
     }
   }
-});
+};

@@ -1,53 +1,63 @@
 'use strict';
 
 var Promise    = require('bluebird');
+var assert     = require('assert');
 var path       = require('path');
 var assign     = require('object-assign');
 var requireDir = require('require-dir');
 
-var globalInitialized = false;
+var init;
+var configured;
+var initPromise = Promise.fromNode(function (cb) { init = cb; });
 
-module.exports = exports = function (config) {
-  if (globalInitialized) {
-    return Promise.reject(
-      new Error('WaterlineModels has already been initialized')
-    );
-  }
-  globalInitialized = true;
-
-  var models = new Models(config);
-  return models.getModels();
+module.exports = exports = function (name) {
+  return initPromise.then(function (collections) {
+    if (!name) { return collections; }
+    assert(collections[name], 'No collection with name "' + name + '" exists');
+    return collections[name];
+  });
 };
 
-function Models(config) {
-  if (!(this instanceof Models)) { return new Models(config); }
+exports.Waterline = require('waterline');
+exports.init = function (config) {
+  assert(
+    !configured,
+    'You can only initialize waterline-models once'
+  );
+
+  configured = true;
 
   config = assign({
-    dir: path.resolve('models'),
+    cwd: process.cwd(),
+    dir: 'models',
     adapters: {},
-    connections: {}
+    connections: {},
+    defaultCollection: {}
   }, config);
 
-  var initialize = Promise.resolve(new exports.Waterline())
+  var Waterline = exports.Waterline;
+  var Collection = Waterline.Collection;
+  var dir = path.resolve(config.cwd, config.dir);
+
+  return Promise.resolve(new Waterline())
     .then(function (waterline) {
-      var collectionFiles = requireDir(config.dir);
+      var collectionFiles = requireDir(dir);
       Object.keys(collectionFiles).forEach(function (collectionName) {
-        var collection = collectionFiles[collectionName];
-        return waterline.loadCollection(collection);
+        var collection = assign(
+          {},
+          config.defaultCollection,
+          {identity: collectionName},
+          collectionFiles[collectionName]
+        );
+        waterline.loadCollection(Collection.extend(collection));
       });
       return Promise.fromNode(function (cb) {
-        waterline.initialize(config, cb);
+        waterline.initialize({
+          adapters: config.adapters,
+          connections: config.connections
+        }, cb);
       });
     })
-    .then(function (ontology) {
-      Object.keys(ontology.collections).forEach(function (modelKey) {
-        exports[modelKey] = ontology.collections[modelKey];
-      });
-      return ontology.collections;
-    });
-
-  this.getModels = function () { return initialize; };
-}
-
-exports.Waterline = require('waterline');
-exports.WaterlineModels = Models;
+    .then(function (ontology) { return ontology.collections; })
+    .nodeify(init);
+};
