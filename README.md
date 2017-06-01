@@ -9,6 +9,11 @@
 
 Auto loads waterline models from a directory
 
+**Looking for another maintainer. I no longer use waterline and would like to
+have someone else take over. If you are interested, please reach out. Otherwise,
+eventually I will have this package removed. I doubt this module is used enough
+for people to read this, but in case it is read, there's your notice.**
+
 # Installation
 
 ```bash
