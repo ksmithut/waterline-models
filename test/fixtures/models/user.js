@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports = {
   identity: 'user',
@@ -11,4 +11,4 @@ module.exports = {
       via: 'owner'
     }
   }
-};
+}

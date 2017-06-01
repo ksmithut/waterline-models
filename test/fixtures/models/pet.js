@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports = {
   identity: 'pet',
@@ -13,4 +13,4 @@ module.exports = {
       model: 'user'
     }
   }
-};
+}

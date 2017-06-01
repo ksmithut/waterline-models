@@ -1,60 +1,65 @@
-'use strict';
+'use strict'
 
-var Promise    = require('bluebird');
-var assert     = require('assert');
-var path       = require('path');
-var assign     = require('object-assign');
-var requireDir = require('require-dir');
+const Bluebird = require('bluebird')
+const assert = require('assert')
+const path = require('path')
+const requireDir = require('require-dir')
 
-var init;
-var configured;
-var initPromise = Promise.fromNode(function (cb) { init = cb; });
+let init, configured
+const initPromise = Bluebird.fromCallback(cb => {
+  init = cb
+})
 
-module.exports = exports = function (name) {
-  return initPromise.then(function (collections) {
-    if (!name) { return collections; }
-    assert(collections[name], 'No collection with name "' + name + '" exists');
-    return collections[name];
-  });
-};
+module.exports = exports = name => {
+  return initPromise.then(collections => {
+    if (!name) return collections
+    assert(collections[name], 'No collection with name "' + name + '" exists')
+    return collections[name]
+  })
+}
 
-exports.Waterline = require('waterline');
-exports.init = function (config) {
-  assert(
-    !configured,
-    'You can only initialize waterline-models once'
-  );
+exports.Waterline = require('waterline')
+exports.init = config => {
+  assert(!configured, 'You can only initialize waterline-models once')
 
-  configured = true;
+  configured = true
 
-  config = assign({
-    cwd: process.cwd(),
-    dir: 'models',
-    adapters: {},
-    connections: {}
-  }, config);
+  config = Object.assign(
+    {
+      cwd: process.cwd(),
+      dir: 'models',
+      adapters: {},
+      connections: {}
+    },
+    config
+  )
 
-  var Waterline = exports.Waterline;
-  var Collection = Waterline.Collection;
-  var dir = path.resolve(config.cwd, config.dir);
+  const Waterline = exports.Waterline
+  const Collection = Waterline.Collection
+  const dir = path.resolve(config.cwd, config.dir)
 
-  return Promise.resolve(new Waterline())
-    .then(function (waterline) {
-      var collectionFiles = requireDir(dir);
-      Object.keys(collectionFiles).forEach(function (collectionName) {
-        var collection = assign(
-          {identity: collectionName},
+  return Bluebird.resolve(new Waterline())
+    .then(waterline => {
+      const collectionFiles = requireDir(dir)
+      Object.keys(collectionFiles).forEach(collectionName => {
+        const collection = Object.assign(
+          { identity: collectionName },
           collectionFiles[collectionName]
-        );
-        waterline.loadCollection(Collection.extend(collection));
-      });
-      return Promise.fromNode(function (cb) {
-        waterline.initialize({
-          adapters: config.adapters,
-          connections: config.connections
-        }, cb);
-      });
+        )
+        waterline.loadCollection(Collection.extend(collection))
+      })
+      return Bluebird.fromCallback(cb => {
+        waterline.initialize(
+          {
+            adapters: config.adapters,
+            connections: config.connections
+          },
+          cb
+        )
+      })
     })
-    .then(function (ontology) { return ontology.collections; })
-    .nodeify(init);
-};
+    .then(ontology => {
+      return ontology.collections
+    })
+    .nodeify(init)
+}

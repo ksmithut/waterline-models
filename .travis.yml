@@ -2,12 +2,9 @@ sudo: false
 language: node_js
 os:
   - linux
-  - osx
 node_js:
-  - "0.12"
-  - "0.11"
-  - "0.10"
-  - iojs
-env:
-  - secure: LpVl6OI41Ax1Xb/A5yu/0eG1QxTozHlsjzJjT1F/VyIuLWHaB15EskNbpoEOV59bpK5Cm/JI4E8D43/u5VW5jmjKOv0WjOAEmkXGG8valB1YXFYzZ3/lnbcB6UpeOorTDFj6GlvVPF21K71JPf++SKAvTt8lsa7T9R9a/2UfFzK7U9MaNJz2IkKQpUBA769wsDDoCfgFsbUiLHVFF4wf37bgwATIR8/3c6wTUw89W0Rqgu5M3ynQFACpXRIxA18f3prAEMTaI8dXiZuCAcQEeYRcPC3GntR3+KOWXxKeHeo++D/IwZHbnR4PuPc1Yc44ykV07Zxzu+lGEFqAhL0I9+y/z0g7VsIJQ1vT9P98u30dJfEDhB/Jkwmjq4L55FmYGwyu/OkQjraaE4SU4WFkGbSyYe9K8NkBRPXv7QPMMVpkkXrmVBjauuKZgkH+1IDSvN2ErBYL8gatUyNY8s0RtpEig1Bvs0xlI8I0ozPrb7NxsLWOk+g4pIZTANt4V3kiBbWJb68zTV97wyGMpjFnZuiyslw1xXzu650gEvkHQhBEOBGE3tCAv9hx4e9EpvUxE3yeBOxLZknLx5mggmlh3pxDSQRgORqNPb3DMPCCI5yGrChl45ohF3thpFi7hk+IqMGrHyYCZZ/6fz8kFNSzEoVNGUeKmuD62AHYC80RlAg=
+  - "4"
+  - "6"
+  - "8"
+  - "stable"
 after_success: npm run codeclimate
